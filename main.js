@@ -213,6 +213,18 @@ function revealOnScroll(selector, staggerMs) {
     els.forEach(function (el) { io.observe(el); });
 }
 
+// Shuffle portfolio items so categories are mixed
+(function () {
+    var grid  = document.querySelector('.portfolio-grid');
+    if (!grid) return;
+    var items = Array.from(grid.children);
+    for (var i = items.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        grid.appendChild(items[j]);
+        items.splice(j, 1);
+    }
+})();
+
 revealOnScroll('.portfolio-item', 55);
 revealOnScroll('.service-card',   80);
 
@@ -237,31 +249,65 @@ skillFills.forEach(function (el) { skillIO.observe(el); });
 //  PORTFOLIO FILTER
 // ============================================================
 var filterBtns     = document.querySelectorAll('.filter-btn');
-var portfolioItems = document.querySelectorAll('.portfolio-item');
+var portfolioItems = Array.from(document.querySelectorAll('.portfolio-item'));
+var ALL_PREVIEW    = 10;
+
+// Create load-more button
+var loadMoreBtn = document.createElement('button');
+loadMoreBtn.className   = 'btn-primary';
+loadMoreBtn.textContent = 'SEE ALL';
+loadMoreBtn.style.cssText = 'display:none; margin: 2rem auto 0; display:none;';
+var portfolioCta = document.querySelector('.portfolio-cta');
+if (portfolioCta) portfolioCta.prepend(loadMoreBtn);
+
+function applyFilter(filter, showAll) {
+    var matched = portfolioItems.filter(function (item) {
+        return filter === 'all' || item.dataset.category === filter;
+    });
+    var hidden = portfolioItems.filter(function (item) {
+        return filter !== 'all' && item.dataset.category !== filter;
+    });
+
+    // Hide non-matching
+    hidden.forEach(function (item) {
+        item.style.opacity   = '0';
+        item.style.transform = 'scale(0.95)';
+        setTimeout(function () { item.style.display = 'none'; }, 300);
+    });
+
+    // Show matching
+    var limit = (filter === 'all' && !showAll) ? ALL_PREVIEW : matched.length;
+    matched.forEach(function (item, i) {
+        if (i < limit) {
+            item.style.display   = '';
+            item.style.opacity   = '1';
+            item.style.transform = 'scale(1)';
+        } else {
+            item.style.opacity   = '0';
+            item.style.transform = 'scale(0.95)';
+            setTimeout(function () { item.style.display = 'none'; }, 300);
+        }
+    });
+
+    // Show/hide load-more button
+    var needsMore = filter === 'all' && !showAll && matched.length > ALL_PREVIEW;
+    loadMoreBtn.style.display = needsMore ? 'block' : 'none';
+}
+
+// Initial state — show 10
+applyFilter('all', false);
 
 filterBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
         filterBtns.forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
-
-        var filter = btn.dataset.filter;
-        portfolioItems.forEach(function (item) {
-            var show = filter === 'all' || item.dataset.category === filter;
-            item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            if (show) {
-                item.style.display   = '';
-                item.style.opacity   = '1';
-                item.style.transform = 'scale(1)';
-            } else {
-                item.style.opacity   = '0';
-                item.style.transform = 'scale(0.95)';
-                setTimeout(function () {
-                    if (item.dataset.category !== btn.dataset.filter && btn.dataset.filter !== 'all')
-                        item.style.display = 'none';
-                }, 300);
-            }
-        });
+        applyFilter(btn.dataset.filter, false);
     });
+});
+
+loadMoreBtn.addEventListener('click', function () {
+    applyFilter('all', true);
+    loadMoreBtn.style.display = 'none';
 });
 
 
@@ -274,17 +320,76 @@ if (contactForm) {
         e.preventDefault();
         var btn  = contactForm.querySelector('button[type="submit"]');
         var orig = btn.textContent;
-        btn.textContent      = 'SENT ✓';
-        btn.style.background = '#285238';
-        btn.disabled         = true;
-        setTimeout(function () {
-            btn.textContent      = orig;
-            btn.style.background = '';
-            btn.disabled         = false;
-            contactForm.reset();
-        }, 3000);
+        btn.textContent = 'SENDING...';
+        btn.disabled    = true;
+
+        fetch('https://formspree.io/f/mnjywrlz', {
+            method:  'POST',
+            headers: { 'Accept': 'application/json' },
+            body:    new FormData(contactForm),
+        })
+        .then(function (res) {
+            if (res.ok) {
+                btn.textContent      = 'SENT ✓';
+                btn.style.background = '#285238';
+                contactForm.reset();
+                setTimeout(function () {
+                    btn.textContent      = orig;
+                    btn.style.background = '';
+                    btn.disabled         = false;
+                }, 3000);
+            } else {
+                btn.textContent = 'ERROR — TRY AGAIN';
+                btn.disabled    = false;
+            }
+        })
+        .catch(function () {
+            btn.textContent = 'ERROR — TRY AGAIN';
+            btn.disabled    = false;
+        });
     });
 }
+
+
+// ============================================================
+//  LIGHTBOX
+// ============================================================
+var lightbox     = document.getElementById('lightbox');
+var lightboxImg  = document.getElementById('lightbox-img');
+var lightboxClose = document.getElementById('lightbox-close');
+
+function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.style.display = 'flex';
+    requestAnimationFrame(function () {
+        requestAnimationFrame(function () { lightbox.classList.add('open'); });
+    });
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    lightbox.classList.remove('open');
+    setTimeout(function () {
+        lightbox.style.display = 'none';
+        lightboxImg.src = '';
+    }, 250);
+    document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.portfolio-item img').forEach(function (img) {
+    img.parentElement.addEventListener('click', function () {
+        openLightbox(img.src, img.alt);
+    });
+});
+
+lightbox.addEventListener('click', function (e) {
+    if (e.target !== lightboxImg) closeLightbox();
+});
+lightboxClose.addEventListener('click', closeLightbox);
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
+});
 
 
 // ============================================================

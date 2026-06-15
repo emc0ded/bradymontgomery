@@ -843,6 +843,51 @@ img { display: block; }
 .form-group textarea { resize: vertical; min-height: 140px; }
 .form-group select option { background: var(--bg-3); color: var(--text); }
 
+/* ===== LIGHTBOX ===== */
+#lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.93);
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+#lightbox.open {
+    display: flex;
+    opacity: 1;
+}
+#lightbox-img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    cursor: default;
+    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+}
+#lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    width: 2.4rem;
+    height: 2.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color var(--ease), color var(--ease);
+}
+#lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+
+.portfolio-item { cursor: zoom-in; }
+
 /* ===== FOOTER ===== */
 footer {
     background: var(--bg);
