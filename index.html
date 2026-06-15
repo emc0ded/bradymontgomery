@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brady Montgomery &mdash; Photographer &amp; Videographer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">BM</a>
+            <ul class="nav-links">
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO
+         The Sketchfab iframe fills the entire section as a dark background.
+         The text is layered on top via z-index.
+         pointer-events:none on the iframe means our JS API controls the camera
+         (postMessage is unaffected by CSS pointer-events).
+    -->
+    <section id="hero">
+
+        <iframe
+            id="sketchfab-viewer"
+            title="Sony Alpha 3 Camera"
+            frameborder="0"
+            allowfullscreen
+            mozallowfullscreen="true"
+            webkitallowfullscreen="true"
+            allow="autoplay; fullscreen; xr-spatial-tracking"
+            xr-spatial-tracking
+            execution-while-out-of-viewport
+            execution-while-not-rendered
+            web-share
+        ></iframe>
+
+        <!-- Covers the Sketchfab loading screen; fades out on viewerready -->
+        <div id="hero-loader"></div>
+
+        <!-- Vignette: fades edges to page bg so model feels embedded -->
+        <div class="hero-overlay"></div>
+
+        <!-- Corner registration marks -->
+        <div class="hero-corners">
+            <span class="corner tl"></span>
+            <span class="corner tr"></span>
+            <span class="corner bl"></span>
+            <span class="corner br"></span>
+        </div>
+
+        <!-- FOREGROUND TEXT — sits in front of the camera model -->
+        <div class="hero-content">
+            <div class="hero-name">
+                <span class="name-brady">BRADY</span>
+                <span class="name-montgomery">MONTGOMERY</span>
+            </div>
+
+            <p class="hero-role">
+                PHOTOGRAPHER <span class="rx">&times;</span> VIDEOGRAPHER <span class="rx">&times;</span> SPOKANE
+            </p>
+
+            <div class="hero-ctas">
+                <a href="#portfolio" class="btn-primary">VIEW WORK</a>
+                <a href="#contact" class="btn-ghost">BOOK SESSION</a>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="hero-scroll">
+            <div class="scroll-bar"></div>
+        </div>
+
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+            <span>WEDDING PHOTOGRAPHY</span><span class="t-sep">&times;</span>
+            <span>CINEMATIC VIDEO</span><span class="t-sep">&times;</span>
+            <span>COMMERCIAL SHOOTS</span><span class="t-sep">&times;</span>
+            <span>PORTRAIT SESSIONS</span><span class="t-sep">&times;</span>
+            <span>SPOKANE, WA</span><span class="t-sep">&times;</span>
+            <span>AVAILABLE WORLDWIDE</span><span class="t-sep">&times;</span>
+            <span>WEDDING PHOTOGRAPHY</span><span class="t-sep">&times;</span>
+            <span>CINEMATIC VIDEO</span><span class="t-sep">&times;</span>
+            <span>COMMERCIAL SHOOTS</span><span class="t-sep">&times;</span>
+            <span>PORTRAIT SESSIONS</span><span class="t-sep">&times;</span>
+            <span>SPOKANE, WA</span><span class="t-sep">&times;</span>
+            <span>AVAILABLE WORLDWIDE</span><span class="t-sep">&times;</span>
+        </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio">
+        <div class="section-header">
+            <span class="section-tag">WORK</span>
+            <h2>SELECTED PROJECTS</h2>
+            <p>A curated selection across photography and videography.</p>
+        </div>
+        <div class="portfolio-filters">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="wedding">WEDDING</button>
+            <button class="filter-btn" data-filter="commercial">COMMERCIAL</button>
+            <button class="filter-btn" data-filter="portrait">PORTRAIT</button>
+            <button class="filter-btn" data-filter="event">EVENT</button>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-item" data-category="wedding">
+                <img src="https://picsum.photos/seed/wed001/600/700" alt="Wedding Photography" loading="lazy">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">WEDDING</span>
+                    <h3>Johnson &amp; Martinez</h3>
+                    <p>Nashville, TN &mdash; 2025</p>
+                </div>
+            </div>
+            <div class="portfolio-item tall" data-category="commercial">
+                <img src="https://picsum.photos/seed/comm002/600/900" alt="Commercial Photography" loading="lazy">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">COMMERCIAL</span>
+                    <h3>Nike Campaign</h3>
+                    <p>New York, NY &mdash; 2025</p>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="portrait">
+                <img src="https://picsum.photos/seed/port003/600/650" alt="Portrait Photography" loading="lazy">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">PORTRAIT</span>
+                    <h3>Emma Williams</h3>
+                    <p>Studio Session &mdash; 2025</p>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="event">
+                <img src="https://picsum.photos/seed/evnt004/600/700" alt="Event Photography" loading="lazy">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">EVENT</span>
+                    <h3>TechConf 2025</h3>
+                    <p>Nashville, TN &mdash; 2025</p>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="wedding">
+                <img src="https://picsum.photos/seed/wed005/600/680" alt="Wedding Photography" loading="lazy">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">WEDDING</span>
+                    <h3>Chen &amp; Park</h3>
+                    <p>Los Angeles, CA &mdash; 2025</p>
+                </div>
+            </div>
+            <div class="portfolio-item tall" data-category="commercial">
+                <img src="https://picsum.photos/seed/arch006/600/900" alt="Architecture Photography" loading="lazy">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">COMMERCIAL</span>
+                    <h3>Architecture Series</h3>
+                    <p>Chicago, IL &mdash; 2024</p>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-cta">
+            <a href="#contact" class="btn-primary">BOOK A SHOOT</a>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-inner">
+            <div class="about-image">
+                <div class="about-img-wrap">
+                    <img src="https://picsum.photos/seed/brady007/500/650" alt="Brady Montgomery">
+                    <div class="about-img-label">BM / 001</div>
+                </div>
+                <div class="about-stamp">
+                    <div class="stamp-text">
+                        <span>SPOKANE</span>
+                        <span class="stamp-dot">&#9672;</span>
+                        <span>EST. 2016</span>
+                        <span class="stamp-dot">&#9672;</span>
+                        <span>WA</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-content">
+                <span class="section-tag">ABOUT</span>
+                <h2>THE EYE BEHIND THE LENS</h2>
+                <p class="about-lead">Hi, I'm Brady! Born and raised in Spokane, I've spent years exploring all the local gems this city has to offer.</p>
+                <p>Immersed in the skate and photography scene, I discovered my true passion for capturing unforgettable moments. Whether you're planning a wedding, engagement, family photos, or want to document your favorite hobby, I'd love to help bring your vision to life. Let's connect!</p>
+                <div class="about-tags">
+                    <span class="about-tag">WEDDINGS</span>
+                    <span class="about-tag">CONCERTS</span>
+                    <span class="about-tag">ENGAGEMENTS</span>
+                    <span class="about-tag">FAMILY</span>
+                    <span class="about-tag">LIFESTYLE</span>
+                </div>
+                <a href="#contact" class="btn-primary">LET'S CONNECT</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+        <div class="section-header">
+            <span class="section-tag">SERVICES</span>
+            <h2>WHAT I OFFER</h2>
+            <p>Tailored photography and videography for every occasion.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-num">01</div>
+                <h3>WEDDING PHOTOGRAPHY</h3>
+                <p>Full-day coverage from getting ready to the last dance. Delivered in 4&ndash;6 weeks.</p>
+                <div class="service-price">FROM <strong>$2,500</strong></div>
+                <a href="#contact" class="service-link">INQUIRE &rarr;</a>
+            </div>
+            <div class="service-card featured">
+                <div class="service-badge">MOST POPULAR</div>
+                <div class="service-num">02</div>
+                <h3>CINEMATIC VIDEOGRAPHY</h3>
+                <p>4K cinematic films for weddings and brands. Professional color grade, licensed music.</p>
+                <div class="service-price">FROM <strong>$3,500</strong></div>
+                <a href="#contact" class="service-link">INQUIRE &rarr;</a>
+            </div>
+            <div class="service-card">
+                <div class="service-num">03</div>
+                <h3>PORTRAIT SESSIONS</h3>
+                <p>Individual, couple, and family shoots. Studio or on-location, retouching included.</p>
+                <div class="service-price">FROM <strong>$400</strong></div>
+                <a href="#contact" class="service-link">INQUIRE &rarr;</a>
+            </div>
+            <div class="service-card">
+                <div class="service-num">04</div>
+                <h3>COMMERCIAL &amp; BRAND</h3>
+                <p>Product photography, brand campaigns, and corporate headshots. Deadline guaranteed.</p>
+                <div class="service-price">FROM <strong>$800</strong></div>
+                <a href="#contact" class="service-link">INQUIRE &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="contact-inner">
+            <div class="contact-info">
+                <span class="section-tag">CONTACT</span>
+                <h2>LET'S BUILD SOMETHING</h2>
+                <p>Got a project in mind? Fill out the form &mdash; I'll get back to you soon.</p>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <span class="ci-label">EMAIL</span>
+                        <span>bradyymontgomeryy222@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="ci-label">LOCATION</span>
+                        <span>Spokane, WA &mdash; Available Worldwide</span>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/bradyymontgomery/" target="_blank" class="social-link">IG</a>
+                    <a href="https://www.youtube.com/c/BradyMontgomery" target="_blank" class="social-link">YT</a>
+                </div>
+            </div>
+            <form class="contact-form" id="contact-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">NAME</label>
+                        <input type="text" id="name" name="name" placeholder="John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">EMAIL</label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="service">SERVICE</label>
+                    <select id="service" name="service">
+                        <option value="">Select a service...</option>
+                        <option value="wedding">Wedding Photography</option>
+                        <option value="video">Cinematic Videography</option>
+                        <option value="portrait">Portrait Session</option>
+                        <option value="commercial">Commercial &amp; Brand</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">MESSAGE</label>
+                    <textarea id="message" name="message" placeholder="Tell me about your project, date, location..." rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-full">SEND IT &rarr;</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">BM</div>
+            <div class="footer-links">
+                <a href="#portfolio">PORTFOLIO</a>
+                <span>&mdash;</span>
+                <a href="#about">ABOUT</a>
+                <span>&mdash;</span>
+                <a href="#services">SERVICES</a>
+                <span>&mdash;</span>
+                <a href="#contact">CONTACT</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 <a href="https://emc0ded.com" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor;">emc0ded</a></p>
+        </div>
+    </footer>
+
+    <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
